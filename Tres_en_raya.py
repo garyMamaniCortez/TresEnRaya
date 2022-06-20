@@ -63,7 +63,7 @@ def ganador():
   for i in range(0,9):
     if valorCasilla[i]=="N":
       tablaLlena = False
-  if tablaLlena:
+  if tablaLlena and not finJuego:
     bloquear()
     messagebox.showinfo("EMPATE","El juego es empate")
     finJuego= True
