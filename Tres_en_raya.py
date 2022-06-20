@@ -31,12 +31,15 @@ def cambiar(num):
     valorCasilla[num]=ficha
     listaBotones[num].config(bg="white")
     ganador()
-    ficha="O"
-    turnoJugador.set("Turno: Computadora")
-    turnoComputadora()
+    if not finJuego:
+      ficha="O"
+      turnoJugador.set("Turno: Computadora")
+      turnoComputadora()
   listaBotones[num].config(state="disable")
 
 def mensaje():
+  global finJuego
+  finJuego= True
   if ficha=="X":
     bloquear()
     messagebox.showinfo(f'GANADOR',f'{nombreJugador} gano el juego')
@@ -45,6 +48,7 @@ def mensaje():
     messagebox.showinfo("GANADOR","Computadora gano el juego")
 
 def ganador():
+  global finJuego
   # horizontal
   if (valorCasilla[0]==ficha and valorCasilla[1]==ficha and valorCasilla[2]==ficha)or(valorCasilla[3]==ficha and valorCasilla[4]==ficha and valorCasilla[5]==ficha)or(valorCasilla[6]==ficha and valorCasilla[7]==ficha and valorCasilla[8]==ficha):
     mensaje()
@@ -54,6 +58,16 @@ def ganador():
   # Vertical
   if (valorCasilla[0]==ficha and valorCasilla[3]==ficha and valorCasilla[6]==ficha)or(valorCasilla[1]==ficha and valorCasilla[4]==ficha and valorCasilla[7]==ficha)or(valorCasilla[2]==ficha and valorCasilla[5]==ficha and valorCasilla[8]==ficha):
     mensaje()
+  # tabla llena
+  tablaLlena = True
+  for i in range(0,9):
+    if valorCasilla[i]=="N":
+      tablaLlena = False
+  if tablaLlena:
+    bloquear()
+    messagebox.showinfo("EMPATE","El juego es empate")
+    finJuego= True
+
 
 def iniciarJuego():
     for i in range(0,9):
@@ -61,11 +75,12 @@ def iniciarJuego():
         listaBotones[i].config(bg="lightgrey")
         listaBotones[i].config(text="")
         valorCasilla[i]="N"
-    global nombreJugador
+    global nombreJugador,finJuego
     try:
       nombreJugador=simpledialog.askstring("Jugador","Nombre jugador:")
       nombreJugador=("").join(nombreJugador)
       turnoJugador.set("Turno: " + nombreJugador)
+      finJuego=False
     except:
       bloquear()
 
@@ -77,6 +92,7 @@ ficha="X"
 listaBotones=[]
 valorCasilla=[]
 turnoJugador=StringVar()
+finJuego=False
 for i in range(0,9):
     valorCasilla.append("N")
 
