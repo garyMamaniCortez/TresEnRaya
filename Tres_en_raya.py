@@ -7,22 +7,34 @@ def bloquear():
     for i in range(0,9):
         listaBotones[i].config(state="disable")
 
-def cambiar(num):
-    global nombreJugador,valorCasilla,ficha
+def turnoComputadora():
+  global nombreJugador,valorCasilla,ficha
+  num=random.randint(0,8)
+  casilla=True
+  while casilla:
     if valorCasilla[num]=="N":
-        listaBotones[num].config(text=ficha)
-        valorCasilla[num]=ficha
-        if ficha=="X":
-          listaBotones[num].config(bg="white")
-          ganador()
-          ficha="O"
-          turnoJugador.set("Turno: Computadora")
-        else: 
-          listaBotones[num].config(bg="lightblue")
-          ganador()
-          ficha="X"
-          turnoJugador.set("Turno: " + nombreJugador)
+      listaBotones[num].config(text=ficha)
+      valorCasilla[num]=ficha
+      listaBotones[num].config(bg="lightblue")
+      ganador()
+      ficha="X"
+      casilla=False
+      turnoJugador.set("Turno: " + nombreJugador)
+    else:
+      num=random.randint(0,8)
     listaBotones[num].config(state="disable")
+
+def cambiar(num):
+  global nombreJugador,valorCasilla,ficha
+  if valorCasilla[num]=="N":
+    listaBotones[num].config(text=ficha)
+    valorCasilla[num]=ficha
+    listaBotones[num].config(bg="white")
+    ganador()
+    ficha="O"
+    turnoJugador.set("Turno: Computadora")
+    turnoComputadora()
+  listaBotones[num].config(state="disable")
 
 def mensaje():
   if ficha=="X":
